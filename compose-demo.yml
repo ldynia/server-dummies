@@ -1,0 +1,38 @@
+version: '2'
+
+services:
+
+  lb:
+    hostname: balancer
+    container_name: demo_balancer
+    image: ubuntu:latest
+    volumes:
+      - .:/demo
+    environment:
+      # haproxy or nginx
+      TESTING: nginx
+    command: bash /demo/startup.sh
+
+  node1:
+    hostname: node1
+    container_name: demo_node1
+    image: ubuntu:latest
+    volumes_from:
+      - lb
+    command: bash /demo/startup.sh
+
+  node2:
+    hostname: node2
+    container_name: demo_node2
+    image: ubuntu:latest
+    volumes_from:
+      - lb
+    command: bash /demo/startup.sh
+
+  node3:
+    hostname: node3
+    container_name: demo_node3
+    image: ubuntu:latest
+    volumes_from:
+      - lb
+    command: bash /demo/startup.sh
